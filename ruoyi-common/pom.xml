@@ -45,6 +45,9 @@
         <module>ruoyi-common-nacos</module>
         <module>ruoyi-common-bus</module>
         <module>ruoyi-common-sse</module>
+
+
+        <module>ruoyi-common-tenant-datasource</module>
     </modules>
 
     <artifactId>ruoyi-common</artifactId>
