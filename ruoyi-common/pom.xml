@@ -48,6 +48,7 @@
 
 
         <module>ruoyi-common-tenant-datasource</module>
+        <module>ruoyi-common-tenant-datasource-provider</module>
     </modules>
 
     <artifactId>ruoyi-common</artifactId>

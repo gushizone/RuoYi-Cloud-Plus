@@ -7,12 +7,7 @@ import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSour
 import lombok.RequiredArgsConstructor;
 import org.dromara.common.teanant.datasource.core.DynamicDataSourceManager;
 import org.dromara.common.teanant.datasource.core.TenantDataSourceRoutePlanner;
-import org.dromara.common.teanant.datasource.mapper.SysTenantDatasourceMapper;
-import org.dromara.common.teanant.datasource.repository.DbTenantDatasourceRepository;
-import org.dromara.common.teanant.datasource.repository.TenantDatasourceRepository;
-import org.dromara.common.teanant.datasource.runner.TenantDatasourceApplicationRunner;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.context.annotation.Bean;
 
 /**
@@ -20,8 +15,7 @@ import org.springframework.context.annotation.Bean;
  * @since 2025/8/11
  */
 @RequiredArgsConstructor
-@AutoConfiguration
-@AutoConfigureAfter(DynamicDataSourceAutoConfiguration.class)
+@AutoConfiguration(after = DynamicDataSourceAutoConfiguration.class)
 public class TenantDatasourceConfiguration {
 
     private final DynamicDataSourceProperties dynamicDataSourceProperties;
@@ -36,18 +30,6 @@ public class TenantDatasourceConfiguration {
     @Bean
     public TenantDataSourceRoutePlanner tenantDataSourceRoutePlanner(DynamicDataSourceManager dynamicDataSourceManager) {
         return new TenantDataSourceRoutePlanner(dynamicDataSourceManager);
-    }
-
-    @Bean
-    public TenantDatasourceRepository tenantDatasourceRepository(TenantDataSourceRoutePlanner tenantDataSourceRoutePlanner,
-                                                                 SysTenantDatasourceMapper sysTenantDatasourceMapper) {
-        return new DbTenantDatasourceRepository(tenantDataSourceRoutePlanner, sysTenantDatasourceMapper);
-    }
-
-    @Bean
-    public TenantDatasourceApplicationRunner tenantDatasourceApplicationRunner(DynamicDataSourceManager dynamicDataSourceManager,
-                                                                               TenantDatasourceRepository tenantDatasourceRepository) {
-        return new TenantDatasourceApplicationRunner(dynamicDataSourceManager, tenantDatasourceRepository);
     }
 
 }

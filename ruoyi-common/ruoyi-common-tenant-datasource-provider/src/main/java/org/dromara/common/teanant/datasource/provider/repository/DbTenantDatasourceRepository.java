@@ -1,12 +1,12 @@
-package org.dromara.common.teanant.datasource.repository;
+package org.dromara.common.teanant.datasource.provider.repository;
 
 import com.baomidou.dynamic.datasource.creator.DataSourceProperty;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.dromara.common.teanant.datasource.core.TenantDataSourceRoutePlanner;
-import org.dromara.common.teanant.datasource.domain.entity.SysTenantDatasource;
-import org.dromara.common.teanant.datasource.mapper.SysTenantDatasourceMapper;
+import org.dromara.common.teanant.datasource.provider.entity.SysTenantDatasource;
+import org.dromara.common.teanant.datasource.provider.mapper.SysTenantDatasourceMapper;
 
 import java.util.ArrayList;
 import java.util.List;

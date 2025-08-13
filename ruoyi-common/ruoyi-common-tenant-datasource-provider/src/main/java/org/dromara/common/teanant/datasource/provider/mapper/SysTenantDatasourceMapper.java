@@ -1,8 +1,8 @@
-package org.dromara.common.teanant.datasource.mapper;
+package org.dromara.common.teanant.datasource.provider.mapper;
 
 import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.dromara.common.teanant.datasource.domain.entity.SysTenantDatasource;
+import org.dromara.common.teanant.datasource.provider.entity.SysTenantDatasource;
 
 /**
  * 租户数据源Mapper接口

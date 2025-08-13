@@ -1,4 +1,4 @@
-package org.dromara.common.teanant.datasource.repository;
+package org.dromara.common.teanant.datasource.provider.repository;
 
 import com.baomidou.dynamic.datasource.creator.DataSourceProperty;
 
