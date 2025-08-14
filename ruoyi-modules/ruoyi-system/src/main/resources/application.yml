@@ -34,3 +34,6 @@ spring:
       - optional:nacos:${spring.application.name}.yml
 
 
+tenant-datasource:
+  auto:
+    enabled: true # 开启自动切换

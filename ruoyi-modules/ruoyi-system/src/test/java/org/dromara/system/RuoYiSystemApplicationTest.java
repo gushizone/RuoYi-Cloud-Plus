@@ -35,7 +35,8 @@ public class RuoYiSystemApplicationTest {
         List<SysNotice> list1 = sysNoticeMapper.selectList();
         System.out.println("list1: " + list1);
 
-        TenantDataSourceHelper.exec("000010", () -> {
+        // 切换租户数据源
+        TenantDataSourceHelper.exec("205949", () -> {
             List<SysNotice> list2 = sysNoticeMapper.selectList();
             System.out.println("list2: " + list2);
         });

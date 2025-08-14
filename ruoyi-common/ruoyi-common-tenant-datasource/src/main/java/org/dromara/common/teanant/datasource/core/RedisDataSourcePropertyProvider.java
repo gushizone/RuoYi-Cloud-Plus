@@ -57,7 +57,7 @@ public class RedisDataSourcePropertyProvider {
                 addConsumer.accept(entry.getValue());
                 context.put(entry.getKey(), entry.getValue());
             } else if (isModify(dataSourceProperty, entry.getValue())) {
-                log.info("变更数据源, ds={}", entry.getKey());
+                log.info("修改数据源, ds={}", entry.getKey());
                 addConsumer.accept(entry.getValue());
             } else {
                 // ignore
