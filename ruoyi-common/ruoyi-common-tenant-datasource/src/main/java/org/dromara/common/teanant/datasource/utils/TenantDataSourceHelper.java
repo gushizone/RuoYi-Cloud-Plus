@@ -1,9 +1,10 @@
-package org.dromara.common.teanant.datasource.core;
+package org.dromara.common.teanant.datasource.utils;
 
 import cn.hutool.core.text.StrPool;
 import cn.hutool.extra.spring.SpringUtil;
 import com.baomidou.dynamic.datasource.toolkit.DynamicDataSourceContextHolder;
 import org.dromara.common.teanant.datasource.constant.TenantDatasourceConstant;
+import org.dromara.common.teanant.datasource.core.DynamicDataSourceManager;
 
 import java.util.function.Supplier;
 
@@ -19,7 +20,7 @@ public class TenantDataSourceHelper {
      * 通过租户构建数据源 key (module-tenantId) todo 待优化
      */
     public static String buildKey(String tenantId) {
-        return TenantDatasourceConstant.MODULE_PREFIX + tenantId;
+        return TenantDatasourceConstant.KEY_PREFIX + tenantId;
     }
 
     /**

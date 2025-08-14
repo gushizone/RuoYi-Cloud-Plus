@@ -36,10 +36,10 @@ public class TenantDatasourceProviderApplicationRunner implements ApplicationRun
         // 发布远程数据源
         // todo 根据服务名加载
         List<DataSourceProperty> dataSourceProperties = tenantDatasourceRepository.getList();
-        RedisUtils.deleteObject(TenantDatasourceConstant.CACHE);
+        RedisUtils.deleteObject(TenantDatasourceConstant.CACHE_NAME);
         if (CollectionUtils.isNotEmpty(dataSourceProperties)) {
             Map<String, DataSourceProperty> dataSourcePropertyMap = StreamUtils.toIdentityMap(dataSourceProperties, DataSourceProperty::getPoolName);
-            RedisUtils.setCacheMap(TenantDatasourceConstant.CACHE, dataSourcePropertyMap);
+            RedisUtils.setCacheMap(TenantDatasourceConstant.CACHE_NAME, dataSourcePropertyMap);
         }
 
         // 重载本地数据源

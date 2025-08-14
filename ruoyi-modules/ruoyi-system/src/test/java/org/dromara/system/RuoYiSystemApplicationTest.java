@@ -1,7 +1,7 @@
 package org.dromara.system;
 
 import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
-import org.dromara.common.teanant.datasource.core.TenantDataSourceHelper;
+import org.dromara.common.teanant.datasource.utils.TenantDataSourceHelper;
 import org.dromara.system.domain.SysNotice;
 import org.dromara.system.mapper.SysNoticeMapper;
 import org.junit.jupiter.api.BeforeEach;

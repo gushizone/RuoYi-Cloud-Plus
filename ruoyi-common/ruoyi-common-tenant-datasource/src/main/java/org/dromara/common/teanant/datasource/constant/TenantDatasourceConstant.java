@@ -9,8 +9,8 @@ import cn.hutool.extra.spring.SpringUtil;
  */
 public interface TenantDatasourceConstant {
 
-    String CACHE = "global:tenant_datasource";
+    String CACHE_NAME = "global:tenant_datasource";
 
-    String MODULE_PREFIX = SpringUtil.getApplicationName() + StrPool.DASHED;
+    String KEY_PREFIX = SpringUtil.getApplicationName() + StrPool.DASHED;
 
 }

@@ -4,7 +4,6 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.dynamic.datasource.creator.DataSourceProperty;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.common.redis.utils.RedisUtils;
-import org.dromara.common.teanant.datasource.constant.TenantDatasourceConstant;
 
 import java.util.Map;
 import java.util.function.Consumer;
@@ -18,23 +17,26 @@ import java.util.function.Consumer;
 @Slf4j
 public class RedisDataSourcePropertyProvider {
 
+    private final String cacheName;
+    private final String keyPrefix;
     private final Map<String, DataSourceProperty> context;
 
-    public RedisDataSourcePropertyProvider(String key) {
-        this.context = getModulePropertyMap(key);
+    public RedisDataSourcePropertyProvider(String cacheName, String keyPrefix) {
+        this.cacheName = cacheName;
+        this.keyPrefix = keyPrefix;
+        this.context = getModulePropertyMap();
     }
 
-    private static Map<String, DataSourceProperty> getModulePropertyMap(String key) {
-        Map<String, DataSourceProperty> map = RedisUtils.getCacheMap(key);
+    private Map<String, DataSourceProperty> getModulePropertyMap() {
+        Map<String, DataSourceProperty> map = RedisUtils.getCacheMap(cacheName);
         log.info("获得数据源属性，总计={}", map.size());
-        map.keySet().removeIf(e -> !e.startsWith(TenantDatasourceConstant.MODULE_PREFIX));
+        if (StrUtil.isNotBlank(keyPrefix)) {
+            map.keySet().removeIf(e -> !e.startsWith(keyPrefix));
+        }
         log.info("获得数据源属性，当前模块可用数={}, keys={}", map.size(), map.keySet());
         return map;
     }
 
-    /**
-     * todo 根据 module 获取
-     */
     public Map<String, DataSourceProperty> getPropertyMap() {
         return context;
     }
@@ -47,7 +49,7 @@ public class RedisDataSourcePropertyProvider {
      */
     public synchronized void reload(Consumer<DataSourceProperty> addConsumer,
                                     Consumer<String> removeConsumer) {
-        Map<String, DataSourceProperty> dataSourcePropertyMap = getModulePropertyMap(TenantDatasourceConstant.CACHE);
+        Map<String, DataSourceProperty> dataSourcePropertyMap = getModulePropertyMap();
         for (Map.Entry<String, DataSourceProperty> entry : dataSourcePropertyMap.entrySet()) {
             DataSourceProperty dataSourceProperty = context.get(entry.getKey());
             if (dataSourceProperty == null) {

@@ -5,7 +5,7 @@ import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSour
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
-import org.dromara.common.teanant.datasource.core.TenantDataSourceHelper;
+import org.dromara.common.teanant.datasource.utils.TenantDataSourceHelper;
 import org.dromara.common.teanant.datasource.provider.entity.SysTenantDatasource;
 import org.dromara.common.teanant.datasource.provider.mapper.SysTenantDatasourceMapper;
 

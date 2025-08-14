@@ -19,7 +19,7 @@ public class TenantDatasourcePreConfiguration {
 
     @Bean
     public RedisDataSourcePropertyProvider dataSourcePropertyProvider() {
-        return new RedisDataSourcePropertyProvider(TenantDatasourceConstant.CACHE);
+        return new RedisDataSourcePropertyProvider(TenantDatasourceConstant.CACHE_NAME, TenantDatasourceConstant.KEY_PREFIX);
     }
 
     @Bean
