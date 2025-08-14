@@ -6,7 +6,7 @@ import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSour
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties;
 import lombok.RequiredArgsConstructor;
 import org.dromara.common.teanant.datasource.core.DynamicDataSourceManager;
-import org.dromara.common.teanant.datasource.core.TenantDataSourceRoutePlanner;
+import org.dromara.common.teanant.datasource.core.RedisDataSourcePropertyProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
 
@@ -23,13 +23,8 @@ public class TenantDatasourceConfiguration {
     private final DefaultDataSourceCreator dataSourceCreator;
 
     @Bean
-    public DynamicDataSourceManager dynamicDataSourceManager() {
-        return new DynamicDataSourceManager(dynamicDataSourceProperties, dynamicRoutingDataSource, dataSourceCreator);
-    }
-
-    @Bean
-    public TenantDataSourceRoutePlanner tenantDataSourceRoutePlanner(DynamicDataSourceManager dynamicDataSourceManager) {
-        return new TenantDataSourceRoutePlanner(dynamicDataSourceManager);
+    public DynamicDataSourceManager dynamicDataSourceManager(RedisDataSourcePropertyProvider dataSourcePropertyProvider) {
+        return new DynamicDataSourceManager(dynamicDataSourceProperties, dynamicRoutingDataSource, dataSourceCreator, dataSourcePropertyProvider);
     }
 
 }

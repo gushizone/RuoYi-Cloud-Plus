@@ -1,2 +1,2 @@
+org.dromara.common.teanant.datasource.config.TenantDatasourcePreConfiguration
 org.dromara.common.teanant.datasource.config.TenantDatasourceConfiguration
-org.dromara.common.teanant.datasource.config.TenantDatasourceCustomerConfiguration

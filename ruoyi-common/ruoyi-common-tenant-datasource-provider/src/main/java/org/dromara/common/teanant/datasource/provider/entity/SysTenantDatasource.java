@@ -1,7 +1,9 @@
 package org.dromara.common.teanant.datasource.provider.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.Version;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.dromara.common.tenant.core.TenantEntity;
@@ -16,7 +18,6 @@ import java.io.Serial;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-//@TableName("sys_tenant_datasource")
 @TableName("zt_sys_tenant_datasource")
 public class SysTenantDatasource extends TenantEntity {
 
@@ -30,9 +31,9 @@ public class SysTenantDatasource extends TenantEntity {
     private Long id;
 
     /**
-     * 数据源名称
+     * 所属模块
      */
-    private String name;
+    private String module;
 
     /**
      * 数据源连接地址
@@ -63,6 +64,18 @@ public class SysTenantDatasource extends TenantEntity {
      * 备注
      */
     private String remark;
+
+    /**
+     * 版本
+     */
+    @Version
+    private Long version;
+
+    /**
+     * 删除标志
+     */
+    @TableLogic
+    private Long delFlag;
 
 
 }

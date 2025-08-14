@@ -25,7 +25,7 @@ public class RuoYiSystemApplicationTest {
     public void before() {
 
         Map<String, DataSource> dataSources = dynamicRoutingDataSource.getDataSources();
-        System.out.println("dataSources:" + dataSources);
+        System.out.println("dataSources:  " + dataSources);
     }
 
     @Test

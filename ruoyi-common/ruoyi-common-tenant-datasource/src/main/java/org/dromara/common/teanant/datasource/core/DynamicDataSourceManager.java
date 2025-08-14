@@ -25,6 +25,8 @@ public class DynamicDataSourceManager {
     private final DynamicRoutingDataSource dynamicRoutingDataSource;
     private final DefaultDataSourceCreator dataSourceCreator;
 
+    private final RedisDataSourcePropertyProvider dataSourcePropertyProvider;
+
     /**
      * 获取默认数据源名称
      *
@@ -63,7 +65,7 @@ public class DynamicDataSourceManager {
             DataSource dataSource = dataSourceCreator.createDataSource(dataSourceProperty);
             dynamicRoutingDataSource.addDataSource(dataSourceProperty.getPoolName(), dataSource);
         } catch (Exception e) {
-            log.error("添加数据源失败, dataSourceProperty={}, 异常: {}", dataSourceProperty, e.getMessage(), e);
+            log.error("添加数据源失败, dataSourceProperty={}, 原因: {}", dataSourceProperty, e.getMessage(), e);
             return false;
         }
         return true;
@@ -79,8 +81,20 @@ public class DynamicDataSourceManager {
         try {
             dynamicRoutingDataSource.removeDataSource(ds);
         } catch (Exception e) {
-            log.error("移除数据源失败, ds={}, 异常: {}", ds, e.getMessage(), e);
+            log.error("移除数据源失败, ds={}, 原因: {}", ds, e.getMessage(), e);
         }
         return true;
+    }
+
+    /**
+     * 重新加载数据源
+     * - 不影响默认数据源
+     */
+    public void reload() {
+        try {
+            dataSourcePropertyProvider.reload(this::add, this::remove);
+        } catch (Exception e) {
+            log.error("重新加载数据源失败, 原因: {}", e.getMessage(), e);
+        }
     }
 }

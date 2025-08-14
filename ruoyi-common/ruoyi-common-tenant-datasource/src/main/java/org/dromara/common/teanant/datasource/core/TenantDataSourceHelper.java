@@ -1,7 +1,9 @@
 package org.dromara.common.teanant.datasource.core;
 
+import cn.hutool.core.text.StrPool;
 import cn.hutool.extra.spring.SpringUtil;
 import com.baomidou.dynamic.datasource.toolkit.DynamicDataSourceContextHolder;
+import org.dromara.common.teanant.datasource.constant.TenantDatasourceConstant;
 
 import java.util.function.Supplier;
 
@@ -11,11 +13,40 @@ import java.util.function.Supplier;
  */
 public class TenantDataSourceHelper {
 
-    private static final TenantDataSourceRoutePlanner TENANT_DATA_SOURCE_ROUTE_PLANNER = SpringUtil.getBean(TenantDataSourceRoutePlanner.class);
+    private static final DynamicDataSourceManager DYNAMIC_DATA_SOURCE_MANAGER = SpringUtil.getBean(DynamicDataSourceManager.class);
+
+    /**
+     * 通过租户构建数据源 key (module-tenantId) todo 待优化
+     */
+    public static String buildKey(String tenantId) {
+        return TenantDatasourceConstant.MODULE_PREFIX + tenantId;
+    }
+
+    /**
+     * 通过租户构建数据源 key (module-tenantId) todo 待优化
+     */
+    public static String buildKey(String module, String tenantId) {
+        return module + StrPool.DASHED + tenantId;
+    }
+
+    /**
+     * 获取租户数据源名称
+     *
+     * @param tenantId 租户编号
+     * @return 数据源名称
+     */
+    public static String getDataSource(String tenantId) {
+        String ds = TenantDataSourceHelper.buildKey(tenantId);
+        if (!DYNAMIC_DATA_SOURCE_MANAGER.exists(ds)) {
+            ds = DYNAMIC_DATA_SOURCE_MANAGER.getPrimaryDataSourceName();
+        }
+        return ds;
+    }
+
 
     public static void exec(String tenantId, Runnable handle) {
         try {
-            String ds = TENANT_DATA_SOURCE_ROUTE_PLANNER.getDataSource(tenantId);
+            String ds = getDataSource(tenantId);
             DynamicDataSourceContextHolder.push(ds);
             handle.run();
         } finally {
@@ -25,7 +56,7 @@ public class TenantDataSourceHelper {
 
     public static <T> T exec(String tenantId, Supplier<T> handle) {
         try {
-            String ds = TENANT_DATA_SOURCE_ROUTE_PLANNER.getDataSource(tenantId);
+            String ds = getDataSource(tenantId);
             DynamicDataSourceContextHolder.push(ds);
             return handle.get();
         } finally {
