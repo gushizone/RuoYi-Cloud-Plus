@@ -1,3 +1,2 @@
 tenant-datasource:
-  auto:
-    enabled: false  # 提供者默认关闭自动切换
+  autoMode: false  # 提供者默认关闭自动模式

@@ -2,6 +2,7 @@ package org.dromara.common.teanant.datasource.constant;
 
 import cn.hutool.core.text.StrPool;
 import cn.hutool.extra.spring.SpringUtil;
+import org.dromara.common.core.constant.GlobalConstants;
 
 /**
  * @author gushizone
@@ -9,7 +10,9 @@ import cn.hutool.extra.spring.SpringUtil;
  */
 public interface TenantDatasourceConstant {
 
-    String CACHE_NAME = "global:tenant_datasource";
+    String CACHE = GlobalConstants.GLOBAL_REDIS_KEY + "tenant_datasource";
+
+    String TOPIC_REFRESH = GlobalConstants.GLOBAL_REDIS_KEY + "topic:tenant_datasource:refresh";
 
     String KEY_PREFIX = SpringUtil.getApplicationName() + StrPool.DASHED;
 

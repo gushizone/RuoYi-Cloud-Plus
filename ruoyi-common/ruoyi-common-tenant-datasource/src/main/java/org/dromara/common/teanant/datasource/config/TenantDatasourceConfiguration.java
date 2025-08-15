@@ -7,8 +7,11 @@ import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSour
 import lombok.RequiredArgsConstructor;
 import org.dromara.common.teanant.datasource.core.DynamicDataSourceManager;
 import org.dromara.common.teanant.datasource.core.RedisDataSourcePropertyProvider;
+import org.dromara.common.teanant.datasource.properties.TenantDatasourceProperties;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 
 /**
  * @author gushizone
@@ -16,6 +19,8 @@ import org.springframework.context.annotation.Bean;
  */
 @RequiredArgsConstructor
 @AutoConfiguration(after = DynamicDataSourceAutoConfiguration.class)
+@EnableConfigurationProperties(TenantDatasourceProperties.class)
+@Import(value = {TenantDatasourceServletConfiguration.class, TenantDatasourceEventConfiguration.class})
 public class TenantDatasourceConfiguration {
 
     private final DynamicDataSourceProperties dynamicDataSourceProperties;

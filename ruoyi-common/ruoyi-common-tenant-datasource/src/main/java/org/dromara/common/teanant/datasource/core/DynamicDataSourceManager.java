@@ -87,12 +87,12 @@ public class DynamicDataSourceManager {
     }
 
     /**
-     * 重新加载数据源
+     * 刷新数据源
      * - 不影响默认数据源
      */
-    public void reload() {
+    public void refresh() {
         try {
-            dataSourcePropertyProvider.reload(this::add, this::remove);
+            dataSourcePropertyProvider.refresh(this::add, this::remove);
         } catch (Exception e) {
             log.error("重新加载数据源失败, 原因: {}", e.getMessage(), e);
         }

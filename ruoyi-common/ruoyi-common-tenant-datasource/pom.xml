@@ -30,6 +30,12 @@
             <artifactId>ruoyi-common-web</artifactId>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>org.dromara</groupId>
+            <artifactId>ruoyi-common-dubbo</artifactId>
+            <optional>true</optional>
+        </dependency>
+
     </dependencies>
 
 </project>

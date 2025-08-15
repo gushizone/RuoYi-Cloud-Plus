@@ -1,21 +1,24 @@
 package org.dromara.common.teanant.datasource.config;
 
+import lombok.RequiredArgsConstructor;
 import org.dromara.common.teanant.datasource.auto.servlet.TenantDatasourceInterceptor;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.dromara.common.teanant.datasource.properties.TenantDatasourceProperties;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
+ * 租户数据源 servlet 自动配置
+ *
  * @author gushizone
  * @since 2025/8/14
  */
-@AutoConfiguration
-@ConditionalOnProperty(value = "tenant-datasource.auto.enabled", havingValue = "true", matchIfMissing = true)
+@RequiredArgsConstructor
 public class TenantDatasourceServletConfiguration implements WebMvcConfigurer {
+
+    private final TenantDatasourceProperties tenantDatasourceProperties;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new TenantDatasourceInterceptor()).addPathPatterns("/**");
+        registry.addInterceptor(new TenantDatasourceInterceptor(tenantDatasourceProperties)).addPathPatterns("/**");
     }
 }

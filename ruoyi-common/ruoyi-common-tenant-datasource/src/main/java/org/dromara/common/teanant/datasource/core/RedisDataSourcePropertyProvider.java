@@ -42,13 +42,13 @@ public class RedisDataSourcePropertyProvider {
     }
 
     /**
-     * 重载数据源属性 todo 待优化
+     * 重载数据源属性
      *
      * @param addConsumer    添加
      * @param removeConsumer 移除
      */
-    public synchronized void reload(Consumer<DataSourceProperty> addConsumer,
-                                    Consumer<String> removeConsumer) {
+    public synchronized void refresh(Consumer<DataSourceProperty> addConsumer,
+                                     Consumer<String> removeConsumer) {
         Map<String, DataSourceProperty> dataSourcePropertyMap = getModulePropertyMap();
         for (Map.Entry<String, DataSourceProperty> entry : dataSourcePropertyMap.entrySet()) {
             DataSourceProperty dataSourceProperty = context.get(entry.getKey());

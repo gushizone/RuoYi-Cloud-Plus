@@ -5,7 +5,7 @@ import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSour
 import lombok.RequiredArgsConstructor;
 import org.dromara.common.core.factory.YmlPropertySourceFactory;
 import org.dromara.common.teanant.datasource.config.TenantDatasourceConfiguration;
-import org.dromara.common.teanant.datasource.core.DynamicDataSourceManager;
+import org.dromara.common.teanant.datasource.event.TenantDatasourceEventPub;
 import org.dromara.common.teanant.datasource.provider.mapper.SysTenantDatasourceMapper;
 import org.dromara.common.teanant.datasource.provider.repository.DbTenantDatasourceRepository;
 import org.dromara.common.teanant.datasource.provider.repository.TenantDatasourceRepository;
@@ -24,7 +24,8 @@ import org.springframework.context.annotation.PropertySource;
 public class TenantDatasourceProviderConfiguration {
 
     private final DynamicDataSourceProperties dynamicDataSourceProperties;
-    private final DynamicDataSourceManager dynamicDataSourceManager;
+
+    private final TenantDatasourceEventPub tenantDatasourceEventPub;
 
     private final SysTenantDatasourceMapper sysTenantDatasourceMapper;
 
@@ -35,7 +36,7 @@ public class TenantDatasourceProviderConfiguration {
 
     @Bean
     public TenantDatasourceProviderApplicationRunner tenantDatasourceApplicationRunner(TenantDatasourceRepository tenantDatasourceRepository) {
-        return new TenantDatasourceProviderApplicationRunner(tenantDatasourceRepository, dynamicDataSourceManager);
+        return new TenantDatasourceProviderApplicationRunner(tenantDatasourceRepository, tenantDatasourceEventPub);
     }
 
 }
