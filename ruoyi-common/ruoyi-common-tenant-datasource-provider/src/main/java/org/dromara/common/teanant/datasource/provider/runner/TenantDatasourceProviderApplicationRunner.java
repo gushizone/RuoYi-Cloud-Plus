@@ -51,13 +51,17 @@ public class TenantDatasourceProviderApplicationRunner implements ApplicationRun
         // 获取缓存配置
         Map<String, DataSourceProperty> cacheDsMap = RedisUtils.getCacheMap(TenantDatasourceConstant.CACHE);
 
+        // 移除不存在
         for (String cacheDs : cacheDsMap.keySet()) {
             DataSourceProperty dataSourceProperty = dsMap.get(cacheDs);
-            if (dataSourceProperty != null) {
-                RedisUtils.setCacheMapValue(TenantDatasourceConstant.CACHE, cacheDs, dataSourceProperty);
-            } else {
+            if (dataSourceProperty == null) {
                 RedisUtils.delCacheMapValue(TenantDatasourceConstant.CACHE, cacheDs);
             }
+        }
+
+        // 覆盖已存在
+        for (Map.Entry<String, DataSourceProperty> entry : dsMap.entrySet()) {
+            RedisUtils.setCacheMapValue(TenantDatasourceConstant.CACHE, entry.getKey(), entry.getValue());
         }
     }
 }
