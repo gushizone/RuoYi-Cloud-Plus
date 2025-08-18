@@ -21,34 +21,21 @@ import org.dromara.common.tenant.helper.TenantHelper;
 @Activate(group = {CommonConstants.PROVIDER}, order = Integer.MAX_VALUE)
 public class TenantDatasourceDubboCustomerFilter implements Filter {
 
-    private final TenantDatasourceProperties tenantDatasourceProperties = SpringUtil.getBean(TenantDatasourceProperties.class);
-
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
-        try {
-            if (!tenantDatasourceProperties.getAutoMode()) {
-                return invoker.invoke(invocation);
-            }
-            // 1. 切换数据源
-            if (StrUtil.isNotBlank(TenantHelper.getTenantId())) {
-                String ds = TenantDataSourceHelper.getDataSource(TenantHelper.getTenantId());
-                DynamicDataSourceContextHolder.push(ds);
-            }
-            // 2. 调用
+        if (!TenantDataSourceHelper.isAuto()) {
             return invoker.invoke(invocation);
-        } catch (Exception e) {
-            log.warn("自动切换数据源失败", e);
-        } finally {
-            try {
-                if (tenantDatasourceProperties.getAutoMode()) {
-                    // 3. 还原数据源
-                    DynamicDataSourceContextHolder.poll();
-                }
-            } catch (Exception e) {
-                log.warn("还原数据源失败", e);
-            }
         }
-        return invoker.invoke(invocation);
+
+        // 1. 切换数据源
+        String ds = TenantDataSourceHelper.getDataSource(TenantHelper.getTenantId());
+        DynamicDataSourceContextHolder.push(ds);
+        // 2. 调用
+        Result invoke = invoker.invoke(invocation);
+        // 3. 还原数据源
+        DynamicDataSourceContextHolder.poll();
+
+        return invoke;
     }
 
 

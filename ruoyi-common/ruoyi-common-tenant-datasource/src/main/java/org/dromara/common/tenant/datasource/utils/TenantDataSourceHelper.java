@@ -1,10 +1,14 @@
 package org.dromara.common.tenant.datasource.utils;
 
 import cn.hutool.core.text.StrPool;
+import cn.hutool.core.util.BooleanUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import com.baomidou.dynamic.datasource.toolkit.DynamicDataSourceContextHolder;
 import org.dromara.common.tenant.datasource.constant.TenantDatasourceConstant;
 import org.dromara.common.tenant.datasource.core.DynamicDataSourceManager;
+import org.dromara.common.tenant.datasource.properties.TenantDatasourceProperties;
+import org.dromara.common.tenant.helper.TenantHelper;
 
 import java.util.function.Supplier;
 
@@ -15,6 +19,7 @@ import java.util.function.Supplier;
 public class TenantDataSourceHelper {
 
     private static final DynamicDataSourceManager DYNAMIC_DATA_SOURCE_MANAGER = SpringUtil.getBean(DynamicDataSourceManager.class);
+    private static final TenantDatasourceProperties PROPERTIES = SpringUtil.getBean(TenantDatasourceProperties.class);
 
     /**
      * 通过租户构建数据源 key (module-tenantId)
@@ -28,6 +33,13 @@ public class TenantDataSourceHelper {
      */
     public static String buildKey(String module, String tenantId) {
         return module + StrPool.DASHED + tenantId;
+    }
+
+    public static boolean isAuto() {
+        if (StrUtil.isBlank(TenantHelper.getTenantId())) {
+            return false;
+        }
+        return BooleanUtil.isTrue(PROPERTIES.getAutoMode());
     }
 
     /**

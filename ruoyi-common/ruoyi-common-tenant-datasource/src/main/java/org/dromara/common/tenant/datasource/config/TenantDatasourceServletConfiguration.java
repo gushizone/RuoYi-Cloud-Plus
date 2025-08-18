@@ -2,7 +2,6 @@ package org.dromara.common.tenant.datasource.config;
 
 import lombok.RequiredArgsConstructor;
 import org.dromara.common.tenant.datasource.auto.servlet.TenantDatasourceInterceptor;
-import org.dromara.common.tenant.datasource.properties.TenantDatasourceProperties;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -15,10 +14,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
 public class TenantDatasourceServletConfiguration implements WebMvcConfigurer {
 
-    private final TenantDatasourceProperties tenantDatasourceProperties;
-
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new TenantDatasourceInterceptor(tenantDatasourceProperties)).addPathPatterns("/**");
+        registry.addInterceptor(new TenantDatasourceInterceptor()).addPathPatterns("/**");
     }
 }
