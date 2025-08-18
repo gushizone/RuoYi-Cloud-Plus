@@ -17,14 +17,14 @@ public class TenantDataSourceHelper {
     private static final DynamicDataSourceManager DYNAMIC_DATA_SOURCE_MANAGER = SpringUtil.getBean(DynamicDataSourceManager.class);
 
     /**
-     * 通过租户构建数据源 key (module-tenantId) todo 待优化
+     * 通过租户构建数据源 key (module-tenantId)
      */
     public static String buildKey(String tenantId) {
         return TenantDatasourceConstant.KEY_PREFIX + tenantId;
     }
 
     /**
-     * 通过租户构建数据源 key (module-tenantId) todo 待优化
+     * 通过租户构建数据源 key (module-tenantId)
      */
     public static String buildKey(String module, String tenantId) {
         return module + StrPool.DASHED + tenantId;

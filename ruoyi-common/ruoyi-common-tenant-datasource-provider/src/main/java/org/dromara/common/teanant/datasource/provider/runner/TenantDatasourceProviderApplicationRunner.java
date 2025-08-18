@@ -3,7 +3,6 @@ package org.dromara.common.teanant.datasource.provider.runner;
 import com.baomidou.dynamic.datasource.creator.DataSourceProperty;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
 import org.dromara.common.core.utils.StreamUtils;
 import org.dromara.common.redis.utils.RedisUtils;
 import org.dromara.common.teanant.datasource.constant.TenantDatasourceConstant;
@@ -31,20 +30,34 @@ public class TenantDatasourceProviderApplicationRunner implements ApplicationRun
 
     @Override
     public void run(ApplicationArguments args) {
-        log.info("加载租户数据源开始...");
+        log.info("初始化租户数据源缓存，开始...");
 
-        // 发布远程数据源
-        // todo 根据服务名加载
-        List<DataSourceProperty> dataSourceProperties = tenantDatasourceRepository.getList();
-        RedisUtils.deleteObject(TenantDatasourceConstant.CACHE);
-        if (CollectionUtils.isNotEmpty(dataSourceProperties)) {
-            Map<String, DataSourceProperty> dataSourcePropertyMap = StreamUtils.toIdentityMap(dataSourceProperties, DataSourceProperty::getPoolName);
-            RedisUtils.setCacheMap(TenantDatasourceConstant.CACHE, dataSourcePropertyMap);
-        }
+        // 初始化缓存
+        initCache();
 
         // 发布刷新事件
-        tenantDatasourceEventPub.publishRefresh();
+        tenantDatasourceEventPub.publishRefresh("数据源提供者启动");
 
-        log.info("加载租户数据源完成.");
+        log.info("初始化租户数据源缓存，结束.");
+    }
+
+    /**
+     * 初始化缓存(覆盖和移除)
+     */
+    private void initCache() {
+        // 获取数据库配置
+        List<DataSourceProperty> dataSourceProperties = tenantDatasourceRepository.getList();
+        Map<String, DataSourceProperty> dsMap = StreamUtils.toIdentityMap(dataSourceProperties, DataSourceProperty::getPoolName);
+        // 获取缓存配置
+        Map<String, DataSourceProperty> cacheDsMap = RedisUtils.getCacheMap(TenantDatasourceConstant.CACHE);
+
+        for (String cacheDs : cacheDsMap.keySet()) {
+            DataSourceProperty dataSourceProperty = dsMap.get(cacheDs);
+            if (dataSourceProperty != null) {
+                RedisUtils.setCacheMapValue(TenantDatasourceConstant.CACHE, cacheDs, dataSourceProperty);
+            } else {
+                RedisUtils.delCacheMapValue(TenantDatasourceConstant.CACHE, cacheDs);
+            }
+        }
     }
 }

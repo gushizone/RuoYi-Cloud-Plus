@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 /**
- * todo 优化
+ * redis 数据源属性提供者
  *
  * @author gushizone
  * @since 2025/8/14
@@ -19,21 +19,28 @@ public class RedisDataSourcePropertyProvider {
 
     private final String cacheName;
     private final String keyPrefix;
+
+    /**
+     * 数据源属性上下文，对应已实例化的数据源
+     */
     private final Map<String, DataSourceProperty> context;
 
     public RedisDataSourcePropertyProvider(String cacheName, String keyPrefix) {
         this.cacheName = cacheName;
         this.keyPrefix = keyPrefix;
-        this.context = getModulePropertyMap();
+        this.context = getRedisModulePropertyMap();
     }
 
-    private Map<String, DataSourceProperty> getModulePropertyMap() {
+    /**
+     * 从 redis 获取当前模块的数据源
+     */
+    private Map<String, DataSourceProperty> getRedisModulePropertyMap() {
         Map<String, DataSourceProperty> map = RedisUtils.getCacheMap(cacheName);
-        log.info("获得数据源属性，总计={}", map.size());
+        log.info("获取数据源属性，总计={}", map.size());
         if (StrUtil.isNotBlank(keyPrefix)) {
             map.keySet().removeIf(e -> !e.startsWith(keyPrefix));
         }
-        log.info("获得数据源属性，当前模块可用数={}, keys={}", map.size(), map.keySet());
+        log.info("获取数据源属性，当前模块可用数={}, keys={}", map.size(), map.keySet());
         return map;
     }
 
@@ -42,14 +49,14 @@ public class RedisDataSourcePropertyProvider {
     }
 
     /**
-     * 重载数据源属性
+     * 刷新本地数据源属性
      *
-     * @param addConsumer    添加
-     * @param removeConsumer 移除
+     * @param addConsumer    消费增加的数据源
+     * @param removeConsumer 消费移除的数据源
      */
     public synchronized void refresh(Consumer<DataSourceProperty> addConsumer,
                                      Consumer<String> removeConsumer) {
-        Map<String, DataSourceProperty> dataSourcePropertyMap = getModulePropertyMap();
+        Map<String, DataSourceProperty> dataSourcePropertyMap = getRedisModulePropertyMap();
         for (Map.Entry<String, DataSourceProperty> entry : dataSourcePropertyMap.entrySet()) {
             DataSourceProperty dataSourceProperty = context.get(entry.getKey());
             if (dataSourceProperty == null) {
@@ -73,6 +80,9 @@ public class RedisDataSourcePropertyProvider {
         }
     }
 
+    /**
+     * 判断数据源是否变更
+     */
     private boolean isModify(DataSourceProperty oldProperty, DataSourceProperty newProperty) {
         if (!StrUtil.equals(oldProperty.getDriverClassName(), newProperty.getDriverClassName())
             || !StrUtil.equals(oldProperty.getUrl(), newProperty.getUrl())

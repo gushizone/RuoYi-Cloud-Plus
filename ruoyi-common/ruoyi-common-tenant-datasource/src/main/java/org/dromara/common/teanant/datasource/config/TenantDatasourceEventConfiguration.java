@@ -29,7 +29,7 @@ public class TenantDatasourceEventConfiguration {
     @Bean
     public TenantDatasourceEventSub tenantDatasourceEventSub() {
         TenantDatasourceEventSub tenantDatasourceEventSub = new TenantDatasourceEventSub(dynamicDataSourceManager);
-        // todo 优化
+        // 监听刷新事件
         tenantDatasourceEventSub.subscribeRefresh();
         return tenantDatasourceEventSub;
     }
