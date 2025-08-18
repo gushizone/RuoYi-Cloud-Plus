@@ -1,0 +1,16 @@
+package org.dromara.common.tenant.datasource.provider.mapper;
+
+import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.dromara.common.tenant.datasource.provider.entity.SysTenantDatasource;
+
+/**
+ * 租户数据源Mapper接口
+ *
+ * @author gushizone
+ * @since 2025/8/11
+ */
+@InterceptorIgnore(tenantLine = "true", dataPermission = "true")
+public interface SysTenantDatasourceMapper extends BaseMapper<SysTenantDatasource> {
+
+}

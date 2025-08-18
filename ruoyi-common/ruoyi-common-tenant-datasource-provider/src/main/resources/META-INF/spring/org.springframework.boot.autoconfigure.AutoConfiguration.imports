@@ -1,1 +1,1 @@
-org.dromara.common.teanant.datasource.provider.config.TenantDatasourceProviderConfiguration
+org.dromara.common.tenant.datasource.provider.config.TenantDatasourceProviderConfiguration
