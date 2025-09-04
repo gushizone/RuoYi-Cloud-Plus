@@ -1,2 +1,3 @@
 org.dromara.common.tenant.datasource.config.TenantDatasourcePreConfiguration
 org.dromara.common.tenant.datasource.config.TenantDatasourceConfiguration
+org.dromara.common.tenant.datasource.config.TenantDatasourcePostConfiguration

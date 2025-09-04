@@ -48,6 +48,10 @@ public class RedisDataSourcePropertyProvider {
         return context;
     }
 
+    public DataSourceProperty getProperty(String poolName) {
+        return context.get(poolName);
+    }
+
     /**
      * 刷新本地数据源属性
      *

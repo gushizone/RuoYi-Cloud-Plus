@@ -13,11 +13,11 @@ import java.util.Map;
  * @author gushizone
  * @since 2025/8/14
  */
-public class RedisTenantDataSourceProvider extends AbstractDataSourceProvider {
+public class TenantDataSourceProvider extends AbstractDataSourceProvider {
 
     private final RedisDataSourcePropertyProvider dataSourcePropertyProvider;
 
-    public RedisTenantDataSourceProvider(DefaultDataSourceCreator defaultDataSourceCreator, RedisDataSourcePropertyProvider dataSourcePropertyProvider) {
+    public TenantDataSourceProvider(DefaultDataSourceCreator defaultDataSourceCreator, RedisDataSourcePropertyProvider dataSourcePropertyProvider) {
         super(defaultDataSourceCreator);
         this.dataSourcePropertyProvider = dataSourcePropertyProvider;
     }

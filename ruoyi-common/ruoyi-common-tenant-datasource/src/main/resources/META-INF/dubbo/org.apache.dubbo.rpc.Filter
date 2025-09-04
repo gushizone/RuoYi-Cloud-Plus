@@ -1,1 +1,1 @@
-tenantDatasourceDubboCustomerFilter=org.dromara.common.tenant.datasource.auto.dubbo.TenantDatasourceDubboCustomerFilter
+tenantDatasourceDubboCustomerFilter=org.dromara.common.tenant.datasource.auto.dubbo.TenantDatasourceDubboProviderFilter

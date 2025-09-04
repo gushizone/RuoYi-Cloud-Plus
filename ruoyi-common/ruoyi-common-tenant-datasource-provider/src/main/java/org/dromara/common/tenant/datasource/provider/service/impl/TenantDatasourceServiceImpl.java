@@ -1,12 +1,13 @@
-package org.dromara.common.tenant.datasource.provider.repository;
+package org.dromara.common.tenant.datasource.provider.service.impl;
 
 import com.baomidou.dynamic.datasource.creator.DataSourceProperty;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
+import org.dromara.common.tenant.datasource.provider.service.TenantDatasourceService;
 import org.dromara.common.tenant.datasource.utils.TenantDataSourceHelper;
-import org.dromara.common.tenant.datasource.provider.entity.SysTenantDatasource;
+import org.dromara.common.tenant.datasource.provider.domain.SysTenantDatasource;
 import org.dromara.common.tenant.datasource.provider.mapper.SysTenantDatasourceMapper;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import java.util.Map;
  * @since 2025/8/12
  */
 @RequiredArgsConstructor
-public class DbTenantDatasourceRepository implements TenantDatasourceRepository {
+public class TenantDatasourceServiceImpl implements TenantDatasourceService {
 
     private final DynamicDataSourceProperties dynamicDataSourceProperties;
 

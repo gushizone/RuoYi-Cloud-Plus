@@ -7,7 +7,7 @@ import org.dromara.common.core.utils.StreamUtils;
 import org.dromara.common.redis.utils.RedisUtils;
 import org.dromara.common.tenant.datasource.constant.TenantDatasourceConstant;
 import org.dromara.common.tenant.datasource.event.TenantDatasourceEventPub;
-import org.dromara.common.tenant.datasource.provider.repository.TenantDatasourceRepository;
+import org.dromara.common.tenant.datasource.provider.service.TenantDatasourceService;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 
@@ -24,7 +24,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class TenantDatasourceProviderApplicationRunner implements ApplicationRunner {
 
-    private final TenantDatasourceRepository tenantDatasourceRepository;
+    private final TenantDatasourceService tenantDatasourceRepository;
 
     private final TenantDatasourceEventPub tenantDatasourceEventPub;
 

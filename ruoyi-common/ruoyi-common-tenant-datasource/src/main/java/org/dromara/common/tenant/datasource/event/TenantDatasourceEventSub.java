@@ -22,8 +22,7 @@ public class TenantDatasourceEventSub {
         log.info("动态数据源刷新, 开启监听");
         RedisUtils.subscribe(TenantDatasourceConstant.TOPIC_REFRESH, TenantDatasourceEvent.class,
             event -> {
-                log.info("动态数据源刷新, event={}", event);
-                log.info("动态数据源刷新, 开始刷新...");
+                log.info("动态数据源刷新, 开始, event={}", event);
                 dynamicDataSourceManager.refresh();
                 log.info("动态数据源刷新, 结束.");
             });

@@ -1,13 +1,10 @@
 package org.dromara.common.tenant.datasource.auto.dubbo;
 
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.extra.spring.SpringUtil;
 import com.baomidou.dynamic.datasource.toolkit.DynamicDataSourceContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.common.constants.CommonConstants;
 import org.apache.dubbo.common.extension.Activate;
 import org.apache.dubbo.rpc.*;
-import org.dromara.common.tenant.datasource.properties.TenantDatasourceProperties;
 import org.dromara.common.tenant.datasource.utils.TenantDataSourceHelper;
 import org.dromara.common.tenant.helper.TenantHelper;
 
@@ -19,7 +16,7 @@ import org.dromara.common.tenant.helper.TenantHelper;
  */
 @Slf4j
 @Activate(group = {CommonConstants.PROVIDER}, order = Integer.MAX_VALUE)
-public class TenantDatasourceDubboCustomerFilter implements Filter {
+public class TenantDatasourceDubboProviderFilter implements Filter {
 
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {

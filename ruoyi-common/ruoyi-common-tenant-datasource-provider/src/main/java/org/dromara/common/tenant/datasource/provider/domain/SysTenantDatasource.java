@@ -1,4 +1,4 @@
-package org.dromara.common.tenant.datasource.provider.entity;
+package org.dromara.common.tenant.datasource.provider.domain;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;

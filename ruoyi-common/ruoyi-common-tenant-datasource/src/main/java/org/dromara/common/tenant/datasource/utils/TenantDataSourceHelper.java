@@ -35,6 +35,9 @@ public class TenantDataSourceHelper {
         return module + StrPool.DASHED + tenantId;
     }
 
+    /**
+     * 是否自动切换数据源
+     */
     public static boolean isAuto() {
         if (StrUtil.isBlank(TenantHelper.getTenantId())) {
             return false;

@@ -1,4 +1,4 @@
-package org.dromara.common.tenant.datasource.provider.repository;
+package org.dromara.common.tenant.datasource.provider.service;
 
 import com.baomidou.dynamic.datasource.creator.DataSourceProperty;
 
@@ -10,7 +10,7 @@ import java.util.List;
  * @author gushizone
  * @since 2025/8/13
  */
-public interface TenantDatasourceRepository {
+public interface TenantDatasourceService {
 
     List<DataSourceProperty> getList();
 }

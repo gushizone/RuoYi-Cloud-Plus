@@ -15,7 +15,7 @@
 
 ```sql
 CREATE TABLE `sys_tenant_datasource` (
-  `id` int(11) NOT NULL,
+  `id` bigint(20) NOT NULL,
   `module` varchar(50) NOT NULL COMMENT '所属模块',
   `tenant_id` varchar(20) NOT NULL DEFAULT '000000' COMMENT '租户编号',
   `url` varchar(500) NOT NULL COMMENT '数据源连接地址',

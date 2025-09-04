@@ -2,7 +2,7 @@ package org.dromara.common.tenant.datasource.provider.mapper;
 
 import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.dromara.common.tenant.datasource.provider.entity.SysTenantDatasource;
+import org.dromara.common.tenant.datasource.provider.domain.SysTenantDatasource;
 
 /**
  * 租户数据源Mapper接口

@@ -35,4 +35,4 @@ spring:
 
 
 tenant-datasource:
-  autoMode: false  # 提供者默认关闭自动模式
+  autoMode: true  # 提供者默认关闭自动模式

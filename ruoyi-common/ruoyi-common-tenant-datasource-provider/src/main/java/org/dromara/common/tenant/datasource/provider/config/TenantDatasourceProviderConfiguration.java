@@ -7,8 +7,8 @@ import org.dromara.common.core.factory.YmlPropertySourceFactory;
 import org.dromara.common.tenant.datasource.config.TenantDatasourceConfiguration;
 import org.dromara.common.tenant.datasource.event.TenantDatasourceEventPub;
 import org.dromara.common.tenant.datasource.provider.mapper.SysTenantDatasourceMapper;
-import org.dromara.common.tenant.datasource.provider.repository.DbTenantDatasourceRepository;
-import org.dromara.common.tenant.datasource.provider.repository.TenantDatasourceRepository;
+import org.dromara.common.tenant.datasource.provider.service.impl.TenantDatasourceServiceImpl;
+import org.dromara.common.tenant.datasource.provider.service.TenantDatasourceService;
 import org.dromara.common.tenant.datasource.provider.runner.TenantDatasourceProviderApplicationRunner;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -30,12 +30,12 @@ public class TenantDatasourceProviderConfiguration {
     private final SysTenantDatasourceMapper sysTenantDatasourceMapper;
 
     @Bean
-    public TenantDatasourceRepository tenantDatasourceRepository() {
-        return new DbTenantDatasourceRepository(dynamicDataSourceProperties, sysTenantDatasourceMapper);
+    public TenantDatasourceService tenantDatasourceRepository() {
+        return new TenantDatasourceServiceImpl(dynamicDataSourceProperties, sysTenantDatasourceMapper);
     }
 
     @Bean
-    public TenantDatasourceProviderApplicationRunner tenantDatasourceApplicationRunner(TenantDatasourceRepository tenantDatasourceRepository) {
+    public TenantDatasourceProviderApplicationRunner tenantDatasourceApplicationRunner(TenantDatasourceService tenantDatasourceRepository) {
         return new TenantDatasourceProviderApplicationRunner(tenantDatasourceRepository, tenantDatasourceEventPub);
     }
 
