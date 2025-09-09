@@ -7,6 +7,9 @@ import org.dromara.common.sequence.enums.SeqDateFormats;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -36,23 +39,25 @@ public class SequenceTest {
         stopWatch.start();
 
         int threadCount = 10; // 线程数
-        int total = 10;       // 总生成次数
+        int total = 1000;       // 总生成次数
 
         ExecutorService executor = Executors.newFixedThreadPool(threadCount);
 
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
+
         for (int i = 0; i < total; i++) {
-            executor.submit(() -> {
+            CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
                 String no = SeqNoGen.next(SeqDateFormats.MINUTE, 4);
                 System.out.println(StrUtil.format("{}, no= {}", Thread.currentThread().getName(), no));
-            });
+            }, executor);
+            futures.add(future);
         }
+
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+
+        stopWatch.stop();
+        System.out.println(StrUtil.format("总计耗时 {} ms", stopWatch.getTime(TimeUnit.MILLISECONDS)));
 
         executor.shutdown();
-        while (!executor.isTerminated()) {
-            stopWatch.stop();
-            System.out.println(stopWatch.getTime(TimeUnit.MILLISECONDS));
-
-            Thread.sleep(10_000); // 等待所有任务完成
-        }
     }
 }

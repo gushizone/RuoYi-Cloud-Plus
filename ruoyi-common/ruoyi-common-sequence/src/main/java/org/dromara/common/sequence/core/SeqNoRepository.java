@@ -6,12 +6,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.dromara.common.core.exception.ServiceException;
 import org.dromara.common.redis.utils.RedisUtils;
 import org.dromara.common.sequence.config.properties.SequenceProperties;
+import org.dromara.common.sequence.constant.SeqConstant;
 import org.dromara.common.sequence.entity.SeqNo;
+import org.redisson.api.RLock;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 序列号仓储
@@ -33,22 +36,38 @@ public class SeqNoRepository {
 
     public Long incr(String key, long ttl, int incr) {
         long next;
-        long nowSeqNo = redisIncr(key, -1, 0);
         int period = getPeriod();
+        long nowSeqNo = redisIncr(key, -1, 0);
         if (nowSeqNo == 0L) {
-            // 第一次获取 或 redis 数据丢失
-            log.warn("redis 不存在序列号, 尝试从数据库获取, key={}, incr={}", key, incr);
-            SeqNo seqNo = select(key);
-            if (seqNo == null) {
-                log.info("数据库新增序列号, key={}, incr={}", key, incr);
-                insert(key, ttl, incr);
-                next = redisIncr(key, ttl, incr);
-            } else {
-                log.warn("恢复 redis 中的序列号, key={}, incr={}, no={}", key, incr, seqNo.getNo());
-                update(key, ttl, incr);
-                next = redisIncr(key, ttl, seqNo.getNo() + incr);
+            RLock lock = RedisUtils.getClient().getLock(SeqConstant.GLOBAL_REDIS_KEY_SEQ);
+            try {
+                boolean acquired = lock.tryLock(5, 10, TimeUnit.SECONDS);
+                if (!acquired) {
+                    throw new ServiceException("系统繁忙, 请稍后重试");
+                }
+                nowSeqNo = redisIncr(key, -1, 0);
+                if (nowSeqNo == 0L) {
+                    // 第一次获取 或 redis 数据丢失
+                    log.warn("redis 不存在序列号, 尝试从数据库获取, key={}, incr={}", key, incr);
+                    SeqNo seqNo = select(key);
+                    if (seqNo == null) {
+                        log.info("数据库新增序列号, key={}, incr={}", key, incr);
+                        insert(key, ttl, incr);
+                        next = redisIncr(key, ttl, incr);
+                    } else {
+                        log.warn("恢复 redis 中的序列号, key={}, incr={}, no={}", key, incr, seqNo.getNo());
+                        update(key, ttl, incr);
+                        next = redisIncr(key, ttl, seqNo.getNo() + incr);
+                    }
+                    return next;
+                }
+            } catch (Exception e) {
+                throw new ServiceException("系统繁忙, 请稍后重试");
+            } finally {
+                if (lock.isHeldByCurrentThread()) {
+                    lock.unlock();
+                }
             }
-            return next;
         }
 
         next = redisIncr(key, ttl, incr);
@@ -78,21 +97,13 @@ public class SeqNoRepository {
     private void insert(String key, long ttl, int incr) {
         Integer seqNo = getSeqNo(incr);
         Date retentionDeadline = getRetentionDeadline(ttl);
-        int updated = jdbcTemplate.update(SQL_INSERT, key, seqNo, retentionDeadline);
-        if (updated != 1) {
-            // insert 可能并发
-            throw new ServiceException("系统繁忙, 请稍后重试");
-        }
+        jdbcTemplate.update(SQL_INSERT, key, seqNo, retentionDeadline);
     }
 
     private void update(String key, long ttl, int incr) {
         Integer seqNo = getSeqNo(incr);
         Date retentionDeadline = getRetentionDeadline(ttl);
-        int updated = jdbcTemplate.update(SQL_UPDATE, seqNo, retentionDeadline, key);
-        if (updated != 1) {
-            // 并发生成单号时, update 可能早于 insert
-            throw new ServiceException("系统繁忙, 请稍后重试");
-        }
+        jdbcTemplate.update(SQL_UPDATE, seqNo, retentionDeadline, key);
     }
 
     private int getSeqNo(int incr) {
