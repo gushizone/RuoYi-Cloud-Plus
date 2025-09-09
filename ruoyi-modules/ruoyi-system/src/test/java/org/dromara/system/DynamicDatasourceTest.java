@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @SpringBootTest
-public class RuoYiSystemApplicationTest {
+public class DynamicDatasourceTest {
 
     @Autowired
     private SysNoticeMapper sysNoticeMapper;

@@ -521,6 +521,18 @@ public class RedisUtils {
     }
 
     /**
+     * 递增原子值
+     *
+     * @param key Redis键
+     * @param incr 步长
+     * @return 当前值
+     */
+    public static long incrAtomicValue(String key, long incr) {
+        RAtomicLong atomic = CLIENT.getAtomicLong(key);
+        return atomic.addAndGet(incr);
+    }
+
+    /**
      * 递减原子值
      *
      * @param key Redis键
