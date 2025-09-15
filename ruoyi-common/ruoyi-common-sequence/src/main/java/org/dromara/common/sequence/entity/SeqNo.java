@@ -14,7 +14,7 @@ public class SeqNo implements Serializable {
 
     private Long id;
 
-    private String key;
+    private String seqKey;
 
     private Long no;
 

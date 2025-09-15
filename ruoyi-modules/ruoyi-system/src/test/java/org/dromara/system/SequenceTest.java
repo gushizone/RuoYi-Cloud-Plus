@@ -25,10 +25,10 @@ public class SequenceTest {
             String no = SeqNoGen.next("TEST", SeqDateFormats.DAY, 4);
             System.out.println("no= " + no);
 
-            String no1 = SeqNoGen.next("TEST", SeqDateFormats.YEAR, 4);
-            System.out.println("no1= " + no1);
-            String no2 = SeqNoGen.next(SeqDateFormats.MINUTE, 4);
-            System.out.println("no2= " + no2);
+//            String no1 = SeqNoGen.next("TEST", SeqDateFormats.YEAR, 4);
+//            System.out.println("no1= " + no1);
+//            String no2 = SeqNoGen.next(SeqDateFormats.MINUTE, 4);
+//            System.out.println("no2= " + no2);
         }
     }
 

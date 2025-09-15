@@ -29,9 +29,9 @@ public class SeqNoRepository {
     private final SequenceProperties sequenceProperties;
     private final JdbcTemplate jdbcTemplate;
 
-    private static final String SQL_SELECT = "SELECT `id`, `key`, `no`, `retention_deadline`, `create_time`, `update_time` from  `seq_no` WHERE `key` = ? ";
-    private static final String SQL_INSERT = "INSERT INTO `seq_no` ( `key`, `no`, `retention_deadline`) VALUES ( ?, ?, ?)";
-    private static final String SQL_UPDATE = "UPDATE `seq_no` set `no` = `no` + ?, `retention_deadline` = ? where `key` = ? ";
+    private static final String SQL_SELECT = "SELECT `id`, `seq_key`, `no`, `retention_deadline`, `create_time`, `update_time` from  `seq_no` WHERE `seq_key` = ? ";
+    private static final String SQL_INSERT = "INSERT INTO `seq_no` ( `seq_key`, `no`, `retention_deadline`) VALUES ( ?, ?, ?)";
+    private static final String SQL_UPDATE = "UPDATE `seq_no` set `no` = `no` + ?, `retention_deadline` = ? where `seq_key` = ? ";
 
 
     public Long incr(String key, long ttl, int incr) {
@@ -47,7 +47,6 @@ public class SeqNoRepository {
                 }
                 nowSeqNo = redisIncr(key, -1, 0);
                 if (nowSeqNo == 0L) {
-                    // 第一次获取 或 redis 数据丢失
                     log.warn("redis 不存在序列号, 尝试从数据库获取, key={}, incr={}", key, incr);
                     SeqNo seqNo = select(key);
                     if (seqNo == null) {
@@ -62,6 +61,7 @@ public class SeqNoRepository {
                     return next;
                 }
             } catch (Exception e) {
+                log.error("序列化生成失败: {}", e.getMessage(), e);
                 throw new ServiceException("系统繁忙, 请稍后重试");
             } finally {
                 if (lock.isHeldByCurrentThread()) {

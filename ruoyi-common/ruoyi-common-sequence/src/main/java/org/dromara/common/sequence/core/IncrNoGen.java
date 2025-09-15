@@ -3,7 +3,6 @@ package org.dromara.common.sequence.core;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import org.dromara.common.sequence.constant.SeqConstant;
-import org.dromara.common.tenant.helper.TenantHelper;
 
 /**
  * 递增号生成
@@ -59,9 +58,7 @@ public class IncrNoGen {
      * @return 结果
      */
     public static Long incr(String key, long ttl, int incr) {
-        if (TenantHelper.isEnable()) {
-            key = SeqConstant.GLOBAL_REDIS_KEY_SEQ + key;
-        }
+        key = SeqConstant.GLOBAL_REDIS_KEY_SEQ + key;
         return REPOSITORY.incr(key, ttl, incr);
     }
 
