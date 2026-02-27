@@ -50,6 +50,8 @@
         <module>ruoyi-common-tenant-datasource</module>
         <module>ruoyi-common-tenant-datasource-provider</module>
         <module>ruoyi-common-sequence</module>
+        <module>ruoyi-common-task-queue</module>
+        <module>ruoyi-common-task-queue-file</module>
     </modules>
 
     <artifactId>ruoyi-common</artifactId>
